@@ -31,6 +31,13 @@ jobs:
       - name: Extraer y compilar
         run: |
           unzip -q ADLO_Android_Proyecto.zip
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("ADLO_Android/app/src/main/java/com/adlo/business/MainActivity.kt")
+          s = p.read_text()
+          s = s.replace('appendLine("Fecha: $dayStamp()")', 'appendLine("Fecha: ${dayStamp()}")')
+          p.write_text(s)
+          PY
           cd ADLO_Android
           gradle assembleDebug
 
